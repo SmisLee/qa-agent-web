@@ -63,15 +63,16 @@ function withBasePath(url: string | null | undefined): string | undefined {
 function fixArtifactPaths(report: ReportDetail): ReportDetail {
   return {
     ...report,
-    rows: report.rows.map((r) => ({
-      ...r,
-      artifacts: {
-        ...r.artifacts,
+    rows: report.rows.map((r) => {
+      const fixed: any = {
         screenshots: (r.artifacts.screenshots || []).map((s) => withBasePath(s)!).filter(Boolean),
-        video: withBasePath(r.artifacts.video),
-        log: withBasePath(r.artifacts.log),
-      },
-    })),
+      };
+      const v = withBasePath(r.artifacts.video);
+      if (v) fixed.video = v;
+      const l = withBasePath(r.artifacts.log);
+      if (l) fixed.log = l;
+      return { ...r, artifacts: fixed };
+    }),
   };
 }
 
