@@ -1,8 +1,8 @@
 name: Deploy QA Agent Web
 
 # Friday CI에서 sim QA 완료 후 trigger:
-#   gh workflow run deploy-qa-agent-web.yml
-# 또는 PBI dir push 시 자동 (paths filter).
+#   gh workflow run deploy.yml
+# 또는 push 시 자동 (paths filter).
 
 on:
   workflow_dispatch:
@@ -13,11 +13,18 @@ on:
         default: ""
   push:
     branches:
-      - feature/qa-agent
+      - main
     paths:
-      - "alarmy-qa-output/reports/**"
-      - "qa-agent-web/**"
-      - ".github/workflows/deploy-qa-agent-web.yml"
+      - "reports/**"
+      - "app/**"
+      - "lib/**"
+      - "scripts/**"
+      - "public/**"
+      - "package.json"
+      - "package-lock.json"
+      - "next.config.js"
+      - "tsconfig.json"
+      - ".github/workflows/deploy.yml"
 
 concurrency:
   group: "pages"
@@ -30,10 +37,7 @@ permissions:
 
 jobs:
   build:
-    runs-on: macos-14   # ffmpeg + Node — macOS runner가 sim 결과 호환 안정
-    defaults:
-      run:
-        working-directory: qa-agent-web
+    runs-on: macos-14   # ffmpeg + Node
     steps:
       - uses: actions/checkout@v4
 
@@ -44,7 +48,6 @@ jobs:
         with:
           node-version: "22"
           cache: "npm"
-          cache-dependency-path: qa-agent-web/package-lock.json
 
       - name: npm ci
         run: npm ci
@@ -61,7 +64,7 @@ jobs:
 
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: qa-agent-web/out
+          path: out
 
   deploy:
     needs: build
