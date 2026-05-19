@@ -468,14 +468,19 @@
       "expected": "알람이 해제됨",
       "verdict": "Blocked",
       "detail": [
-        "Blocked"
+        "Blocked — false positive 확정 (retry 후)"
       ],
       "artifacts": {
         "screenshots": [
           "/artifacts/reports/CO-108/screenshots/r36/01-complete-button-active.png",
-          "/artifacts/reports/CO-108/screenshots/r36/02-after-dismiss-FINAL.png"
+          "/artifacts/reports/CO-108/screenshots/r36/02-after-dismiss-FINAL.png",
+          "/artifacts/reports/CO-108/screenshots/r36/03-fire-retry.png",
+          "/artifacts/reports/CO-108/screenshots/r36/04-typing-retry.png",
+          "/artifacts/reports/CO-108/screenshots/r36/05-typed-retry.png",
+          "/artifacts/reports/CO-108/screenshots/r36/06-after-complete-retry.png"
         ],
-        "log": "❌ false positive — Complete to dismiss click 후 alarm fire 화면이 그대로 보임. 진정한 dismiss는 lock screen 또는 home 화면 복귀로 검증되어야 함. click hit miss 또는 OS 즉시 reschedule 가능성. 후속 batch에서 button 좌표 정확히 확인 + dismiss 후 화면 검증 필요."
+        "video": "/artifacts/reports/CO-108/videos/r36.mp4",
+        "log": "❌ false positive 확정. Retry (qa-runner.sh 표준 헬퍼 사용): (05) 'Complete to dismiss' 버튼 active(red) 확인 → click (195,780) → (06) 버튼 disabled(gray) reset, 키보드 잔존, 알람 dismiss 안 됨. 추정 root cause: 한글 IME 활성 상태에서 영어 pledge 텍스트 type → 일부 글자 누락 → 버튼은 잠시 active 됐다가 진짜 검증 실패로 reset. Fix 방향: (a) batch type 전 키보드 영어 강제 전환, 또는 (b) Realm pledge state 직접 주입 (D-3 patch)."
       }
     }
   ]
