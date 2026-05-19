@@ -3,8 +3,8 @@
     {
       "pbiId": "CO-108",
       "title": "미션 해제할 수 없을 때 비상 탈출할 수 있게 하기",
-      "lastRunAt": "2026-05-19T10:30:00",
-      "counts": { "pass": 11, "fail": 0, "blocked": 1, "flaky": 0 }
+      "lastRunAt": "2026-05-19T11:13:56",
+      "counts": { "pass": 15, "fail": 0, "blocked": 1, "flaky": 0 }
     }
   ]
 }
