@@ -1,0 +1,74 @@
+name: Deploy QA Agent Web
+
+# Friday CI에서 sim QA 완료 후 trigger:
+#   gh workflow run deploy-qa-agent-web.yml
+# 또는 PBI dir push 시 자동 (paths filter).
+
+on:
+  workflow_dispatch:
+    inputs:
+      pbi_id:
+        description: "특정 PBI만 처리 (생략 시 전체)"
+        required: false
+        default: ""
+  push:
+    branches:
+      - feature/qa-agent
+    paths:
+      - "alarmy-qa-output/reports/**"
+      - "qa-agent-web/**"
+      - ".github/workflows/deploy-qa-agent-web.yml"
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: macos-14   # ffmpeg + Node — macOS runner가 sim 결과 호환 안정
+    defaults:
+      run:
+        working-directory: qa-agent-web
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install ffmpeg
+        run: brew install ffmpeg
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: qa-agent-web/package-lock.json
+
+      - name: npm ci
+        run: npm ci
+
+      - name: Prepare artifacts (compress videos)
+        run: scripts/prepare-artifacts.sh "${{ github.event.inputs.pbi_id }}"
+
+      - name: Build static export
+        env:
+          PAGES_BASE_PATH: /alarmy-ios   # repo 이름. custom domain 시 비우기
+        run: npm run build
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: qa-agent-web/out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

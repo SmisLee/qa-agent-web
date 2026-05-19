@@ -1,0 +1,18 @@
+body { font-family: -apple-system, system-ui, sans-serif; margin: 0; padding: 24px; background: #FAFAFA; color: #09090B; }
+a { color: #FC314C; text-decoration: none; }
+.card { background: #FFFFFF; border: 1px solid #E4E4E7; border-radius: 12px; padding: 16px; margin-bottom: 12px; display: block; }
+.counts span { margin-right: 12px; }
+.pass { color: #16A34A; } .fail { color: #DC2626; } .blocked { color: #71717A; } .flaky { color: #EA580C; }
+.badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; }
+.badge.pass { background: #DCFCE7; color: #16A34A; }
+.badge.fail { background: #FEE2E2; color: #DC2626; }
+.badge.blocked { background: #F4F4F5; color: #71717A; }
+.badge.flaky { background: #FFEDD5; color: #EA580C; }
+.link-btn { display: inline-flex; padding: 8px 12px; border: 1px solid #E4E4E7; border-radius: 8px; background: #F4F4F5; color: #09090B; margin-right: 8px; font-size: 14px; }
+.link-btn:hover { background: #E4E4E7; }
+.link-btn[aria-disabled="true"] { opacity: 0.4; cursor: not-allowed; }
+.report-header { background: #FFFFFF; border: 1px solid #E4E4E7; border-radius: 16px; padding: 24px; margin-bottom: 16px; }
+.os-badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; background: #F4F4F5; border-radius: 6px; font-size: 13px; font-weight: 500; margin-bottom: 8px; }
+.report-title { font-size: 22px; font-weight: 700; margin: 4px 0 12px; }
+.report-meta { color: #71717A; font-size: 14px; margin-bottom: 16px; }
+.report-meta strong { color: #09090B; font-weight: 600; }
