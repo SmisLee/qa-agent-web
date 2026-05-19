@@ -20,9 +20,9 @@
     "따라쓰기 단계 (입력 및 진행)"
   ],
   "counts": {
-    "pass": 18,
+    "pass": 17,
     "fail": 0,
-    "blocked": 1,
+    "blocked": 2,
     "flaky": 0
   },
   "rows": [
@@ -466,16 +466,16 @@
       "preconditions": "",
       "stepsText": "1. 따라쓰기 단계 진입\n2. 마지막 라운드 문장 입력 완료\n3. [Complete to dismiss] 클릭",
       "expected": "알람이 해제됨",
-      "verdict": "PASS",
+      "verdict": "Blocked",
       "detail": [
-        "PASS"
+        "Blocked"
       ],
       "artifacts": {
         "screenshots": [
           "/artifacts/reports/CO-108/screenshots/r36/01-complete-button-active.png",
           "/artifacts/reports/CO-108/screenshots/r36/02-after-dismiss-FINAL.png"
         ],
-        "log": "Complete to dismiss 클릭 → 알람 화면에서 빠져나옴 = dismiss 작동 확인. (이후 화면에 다시 alarm fire가 보이는 것은 다음 1분 alarm cycle 발생)"
+        "log": "❌ false positive — Complete to dismiss click 후 alarm fire 화면이 그대로 보임. 진정한 dismiss는 lock screen 또는 home 화면 복귀로 검증되어야 함. click hit miss 또는 OS 즉시 reschedule 가능성. 후속 batch에서 button 좌표 정확히 확인 + dismiss 후 화면 검증 필요."
       }
     }
   ]
