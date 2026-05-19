@@ -52,6 +52,29 @@ export function listReports(): ReportSummary[] {
   });
 }
 
+function withBasePath(url: string | null | undefined): string | undefined {
+  if (!url) return undefined;
+  const base = process.env.PAGES_BASE_PATH || "";
+  if (!base) return url;
+  if (url.startsWith("/artifacts/")) return base + url;
+  return url;
+}
+
+function fixArtifactPaths(report: ReportDetail): ReportDetail {
+  return {
+    ...report,
+    rows: report.rows.map((r) => ({
+      ...r,
+      artifacts: {
+        ...r.artifacts,
+        screenshots: (r.artifacts.screenshots || []).map((s) => withBasePath(s)!).filter(Boolean),
+        video: withBasePath(r.artifacts.video),
+        log: withBasePath(r.artifacts.log),
+      },
+    })),
+  };
+}
+
 export function readReport(pbiId: string): ReportDetail | null {
   const p = path.join(ROOT, pbiId, "report.json");
   if (!fs.existsSync(p)) return null;
@@ -59,5 +82,5 @@ export function readReport(pbiId: string): ReportDetail | null {
   if (!j.categories && Array.isArray(j.rows)) {
     j.categories = Array.from(new Set(j.rows.map((r: any) => r.category).filter(Boolean)));
   }
-  return j;
+  return fixArtifactPaths(j);
 }
