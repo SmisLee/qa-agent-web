@@ -54,7 +54,7 @@ jobs:
 
       - name: Build static export
         env:
-          PAGES_BASE_PATH: /alarmy-ios   # repo 이름. custom domain 시 비우기
+          PAGES_BASE_PATH: /qa-agent-web   # repo 이름. custom domain 시 비우기
         run: npm run build
 
       - uses: actions/configure-pages@v5
